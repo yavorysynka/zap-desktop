@@ -34,3 +34,13 @@ export function requestSuggestedNodes() {
     .then(response => response.data)
     .catch(error => error)
 }
+
+export function fetchIpAddress() {
+  const BASE_URL = 'https://api.ipify.org?format=json'
+  return axios({
+    method: 'get',
+    url: BASE_URL
+  })
+    .then(response => response.data)
+    .catch(error => error)
+}

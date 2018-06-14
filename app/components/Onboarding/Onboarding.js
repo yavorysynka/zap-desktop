@@ -6,6 +6,7 @@ import LoadingBolt from 'components/LoadingBolt'
 import FormContainer from './FormContainer'
 import ConnectionType from './ConnectionType'
 import ConnectionDetails from './ConnectionDetails'
+import MobileConnection from './MobileConnection'
 import Alias from './Alias'
 import Autopilot from './Autopilot'
 import Login from './Login'
@@ -34,6 +35,7 @@ const Onboarding = ({
   },
   connectionTypeProps,
   connectionDetailProps,
+  mobileConnectionProps,
   changeStep,
   startLnd,
   submitNewWallet,
@@ -58,7 +60,7 @@ const Onboarding = ({
               use Zap to control a remote node if you desire (for advanced users).
             '
             back={null}
-            next={() => changeStep(connectionType === 'local' ? 1 : 0.2)}
+            next={() => changeStep(connectionType === 'local' ? 0.3 : 0.2)}
           >
             <ConnectionType {...connectionTypeProps} />
           </FormContainer>
@@ -82,6 +84,17 @@ const Onboarding = ({
             <ConnectionDetails {...connectionDetailProps} />
           </FormContainer>
         )
+      case 0.3:
+        return (
+          <FormContainer
+            title='Setup Zap mobile with your desktop'
+            description={`If you have any other devices you'd like to use with your node we can configure things to accept incoming connections from other devices.`}
+            back={() => changeStep(0.1)}
+            next={() => changeStep(1)}
+          >
+            <MobileConnection {...mobileConnectionProps} />
+          </FormContainer>
+        )
 
       case 1:
         return (
@@ -95,12 +108,13 @@ const Onboarding = ({
           </FormContainer>
         )
       case 2:
+        const { mobileConnection, connectionIp } = mobileConnectionProps
         return (
           <FormContainer
             title='Autopilot'
             description='Autopilot is an automatic network manager. Instead of manually adding people to build your network to make payments, enable autopilot to automatically connect you to the Lightning Network using 60% of your balance.' // eslint-disable-line
             back={() => changeStep(1)}
-            next={() => startLnd({ connectionType, alias, autopilot })}
+            next={() => startLnd({ connectionType, alias, autopilot, mobileConnection, connectionIp })}
           >
             <Autopilot {...autopilotProps} />
           </FormContainer>

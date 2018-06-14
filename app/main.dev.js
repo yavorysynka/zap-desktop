@@ -143,10 +143,13 @@ const sendLndSynced = () => {
 }
 
 // Starts the LND node
-const startLnd = (alias, autopilot) => {
+const startLnd = (alias, autopilot, mobileConnection, connectionIp) => {
+  console.log('alias: ', alias)
+  console.log('autopilot: ', autopilot)
+  console.log('mobileConnection: ', mobileConnection)
+  console.log('connectionIp: ', connectionIp)
+  
   const lndConfig = config.lnd()
-  console.log('lndConfig', lndConfig)
-
   const neutrinoArgs = [
     '--bitcoin.active',
     '--bitcoin.testnet',
@@ -155,7 +158,9 @@ const startLnd = (alias, autopilot) => {
     '--neutrino.connect=127.0.0.1:18333',
     '--debuglevel=debug',
     `${autopilot ? '--autopilot.active' : ''}`,
-    `${alias ? `--alias=${alias}` : ''}`
+    `${alias ? `--alias=${alias}` : ''}`,
+    `${mobileConnection ? '--rpclisten=0.0.0.0:10009' : ''}`,
+    `${mobileConnection ? `--tlsextraip=${connectionIp}` : ''}`
   ]
 
   const neutrino = spawn(lndConfig.lndPath, neutrinoArgs)
@@ -289,7 +294,9 @@ app.on('ready', async () => {
       cert: options.connectionCert,
       macaroon: options.connectionMacaroon,
       alias: options.alias,
-      autopilot: options.autopilot
+      autopilot: options.autopilot,
+      mobileConnection: options.mobileConnection,
+      connectionIp: options.connectionIp
     }
 
     console.log('SAVED CONFIG TO:', store.path, 'AS', store.store)
@@ -305,7 +312,7 @@ app.on('ready', async () => {
 
         // No LND process was found.
         if (!results.length) {
-          startLnd(options.alias, options.autopilot)
+          startLnd(options.alias, options.autopilot, options.mobileConnection, options.connectionIp)
         } else {
           // An LND process was found, no need to start our own.
           console.log('LND ALREADY RUNNING')

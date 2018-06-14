@@ -2,6 +2,8 @@ import { createSelector } from 'reselect'
 import { ipcRenderer } from 'electron'
 import Store from 'electron-store'
 
+import { fetchIpAddress } from 'api'
+
 const store = new Store({ name: 'connection' })
 
 // ------------------------------------
@@ -11,6 +13,10 @@ export const SET_CONNECTION_TYPE = 'SET_CONNECTION_TYPE'
 export const SET_CONNECTION_HOST = 'SET_CONNECTION_HOST'
 export const SET_CONNECTION_CERT = 'SET_CONNECTION_CERT'
 export const SET_CONNECTION_MACAROON = 'SET_CONNECTION_MACAROON'
+
+export const SET_MOBILE_CONNECTION = 'SET_MOBILE_CONNECTION'
+
+export const SET_CONNECTION_IP = 'SET_CONNECTION_IP'
 
 export const UPDATE_ALIAS = 'UPDATE_ALIAS'
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
@@ -58,16 +64,25 @@ export function setConnectionHost(connectionHost) {
     connectionHost
   }
 }
+
 export function setConnectionCert(connectionCert) {
   return {
     type: SET_CONNECTION_CERT,
     connectionCert
   }
 }
+
 export function setConnectionMacaroon(connectionMacaroon) {
   return {
     type: SET_CONNECTION_MACAROON,
     connectionMacaroon
+  }
+}
+
+export function setMobileConnection(mobileConnection) {
+  return {
+    type: SET_MOBILE_CONNECTION,
+    mobileConnection
   }
 }
 
@@ -148,6 +163,7 @@ export function changeStep(step) {
 
 export function startLnd(options) {
   // once the user submits the data needed to start LND we will alert the app that it should start LND
+  console.log('options: ', options)
   ipcRenderer.send('startLnd', options)
 
   return {
@@ -207,6 +223,11 @@ export const unlockWalletError = () => (dispatch) => {
   dispatch({ type: SET_UNLOCK_WALLET_ERROR })
 }
 
+export const fetchConnectionIp = () => async (dispatch) => {
+  const { ip } = await fetchIpAddress()
+  dispatch({ type: SET_CONNECTION_IP, connectionIp: ip })
+}
+
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
@@ -215,12 +236,21 @@ const ACTION_HANDLERS = {
   [SET_CONNECTION_HOST]: (state, { connectionHost }) => ({ ...state, connectionHost }),
   [SET_CONNECTION_CERT]: (state, { connectionCert }) => ({ ...state, connectionCert }),
   [SET_CONNECTION_MACAROON]: (state, { connectionMacaroon }) => ({ ...state, connectionMacaroon }),
+
+  [SET_MOBILE_CONNECTION]: (state, { mobileConnection }) => ({ ...state, mobileConnection }),
+  
+  [SET_CONNECTION_IP]: (state, { connectionIp }) => ({ ...state, connectionIp }),
+
   [UPDATE_ALIAS]: (state, { alias }) => ({ ...state, alias }),
+
   [UPDATE_PASSWORD]: (state, { password }) => ({ ...state, password }),
+
   [UPDATE_CREATE_WALLET_PASSWORD]: (state, { createWalletPassword }) => ({ ...state, createWalletPassword }),
   [UPDATE_CREATE_WALLET_PASSWORD_CONFIRMATION]: (state, { createWalletPasswordConfirmation }) => ({ ...state, createWalletPasswordConfirmation }),
+
   [UPDATE_AEZEED_PASSWORD]: (state, { aezeedPassword }) => ({ ...state, aezeedPassword }),
   [UPDATE_AEZEED_PASSWORD_CONFIRMATION]: (state, { aezeedPasswordConfirmation }) => ({ ...state, aezeedPasswordConfirmation }),
+
   [UPDATE_SEED_INPUT]: (state, { inputSeedObj }) => ({
     ...state,
     seedInput: Object.assign([], state.seedInput, { [inputSeedObj.index]: inputSeedObj })
@@ -293,6 +323,7 @@ const initialState = {
   connectionHost: store.get('host', ''),
   connectionCert: store.get('cert', ''),
   connectionMacaroon: store.get('macaroon', ''),
+  mobileConnection: store.get('mobileConnection', true),
   alias: store.get('alias', ''),
   password: '',
   startingLnd: false,
@@ -300,6 +331,9 @@ const initialState = {
   fetchingSeed: false,
   hasSeed: false,
   seed: [],
+
+  // IP address of the machine that will be running the node
+  connectionIp: '',
 
   // wallet password. password used to encrypt the wallet and is required to unlock the daemon after set
   createWalletPassword: '',

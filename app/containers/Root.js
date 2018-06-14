@@ -12,6 +12,8 @@ import {
   setConnectionHost,
   setConnectionCert,
   setConnectionMacaroon,
+  setMobileConnection,
+  fetchConnectionIp,
   updateAlias,
   updatePassword,
   setAutopilot,
@@ -37,6 +39,8 @@ const mapDispatchToProps = {
   setConnectionHost,
   setConnectionCert,
   setConnectionMacaroon,
+  setMobileConnection,
+  fetchConnectionIp,
   updateAlias,
   updatePassword,
   updateCreateWalletPassword,
@@ -85,6 +89,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     setConnectionHost: dispatchProps.setConnectionHost,
     setConnectionCert: dispatchProps.setConnectionCert,
     setConnectionMacaroon: dispatchProps.setConnectionMacaroon
+  }
+
+  const mobileConnectionProps = {
+    mobileConnection: stateProps.onboarding.mobileConnection,
+    connectionIp: stateProps.onboarding.connectionIp,
+
+    setMobileConnection: dispatchProps.setMobileConnection,
+    fetchConnectionIp: dispatchProps.fetchConnectionIp
   }
 
   const aliasProps = {
@@ -159,6 +171,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     submitNewWallet: dispatchProps.submitNewWallet,
     connectionTypeProps,
     connectionDetailProps,
+    mobileConnectionProps,
     aliasProps,
     autopilotProps,
     initWalletProps,
