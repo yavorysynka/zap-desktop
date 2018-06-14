@@ -163,7 +163,6 @@ export function changeStep(step) {
 
 export function startLnd(options) {
   // once the user submits the data needed to start LND we will alert the app that it should start LND
-  console.log('options: ', options)
   ipcRenderer.send('startLnd', options)
 
   return {
@@ -238,7 +237,7 @@ const ACTION_HANDLERS = {
   [SET_CONNECTION_MACAROON]: (state, { connectionMacaroon }) => ({ ...state, connectionMacaroon }),
 
   [SET_MOBILE_CONNECTION]: (state, { mobileConnection }) => ({ ...state, mobileConnection }),
-  
+
   [SET_CONNECTION_IP]: (state, { connectionIp }) => ({ ...state, connectionIp }),
 
   [UPDATE_ALIAS]: (state, { alias }) => ({ ...state, alias }),

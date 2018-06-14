@@ -88,14 +88,19 @@ const Onboarding = ({
         return (
           <FormContainer
             title='Setup Zap mobile with your desktop'
-            description={`If you have any other devices you'd like to use with your node we can configure things to accept incoming connections from other devices.`}
+            description={`If you have any
+              other devices you'd like to 
+              use with your node we can
+              configure things to accept
+              incoming connections from
+              other devices.
+            `}
             back={() => changeStep(0.1)}
             next={() => changeStep(1)}
           >
             <MobileConnection {...mobileConnectionProps} />
           </FormContainer>
         )
-
       case 1:
         return (
           <FormContainer
@@ -107,18 +112,21 @@ const Onboarding = ({
             <Alias {...aliasProps} />
           </FormContainer>
         )
-      case 2:
+      case 2: {
         const { mobileConnection, connectionIp } = mobileConnectionProps
         return (
           <FormContainer
             title='Autopilot'
             description='Autopilot is an automatic network manager. Instead of manually adding people to build your network to make payments, enable autopilot to automatically connect you to the Lightning Network using 60% of your balance.' // eslint-disable-line
             back={() => changeStep(1)}
-            next={() => startLnd({ connectionType, alias, autopilot, mobileConnection, connectionIp })}
+            next={() => startLnd({
+              connectionType, alias, autopilot, mobileConnection, connectionIp
+            })}
           >
             <Autopilot {...autopilotProps} />
           </FormContainer>
         )
+      }
       case 3:
         return (
           <FormContainer
@@ -249,6 +257,7 @@ Onboarding.propTypes = {
   onboarding: PropTypes.object.isRequired,
   connectionTypeProps: PropTypes.object.isRequired,
   connectionDetailProps: PropTypes.object.isRequired,
+  mobileConnectionProps: PropTypes.object.isRequired,
   aliasProps: PropTypes.object.isRequired,
   autopilotProps: PropTypes.object.isRequired,
   initWalletProps: PropTypes.object.isRequired,

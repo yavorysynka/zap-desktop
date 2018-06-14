@@ -15,10 +15,13 @@ class MobileConnection extends React.Component {
     return (
       <div className={styles.container}>
         <section>
+          <img src='icons/zap_mobile.png' alt='Mobile' />
+        </section>
+        <section>
           <div className={`${styles.option} ${mobileConnection && styles.active}`}>
             <div className={`${styles.button}`} onClick={() => setMobileConnection(true)}>
               {mobileConnection ? <FaCircle /> : <FaCircleThin />}
-              <span className={styles.label}>Let's do it</span>
+              <span className={styles.label}>Yes please</span>
             </div>
           </div>
           <div className={`${styles.option} ${!mobileConnection && styles.active}`}>
@@ -28,12 +31,8 @@ class MobileConnection extends React.Component {
             </div>
           </div>
         </section>
-        <section>
-          <img src='icons/zap_mobile.png' />
-        </section>
       </div>
     )
-    
   }
 }
 

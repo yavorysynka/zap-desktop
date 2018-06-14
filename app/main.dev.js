@@ -144,11 +144,6 @@ const sendLndSynced = () => {
 
 // Starts the LND node
 const startLnd = (alias, autopilot, mobileConnection, connectionIp) => {
-  console.log('alias: ', alias)
-  console.log('autopilot: ', autopilot)
-  console.log('mobileConnection: ', mobileConnection)
-  console.log('connectionIp: ', connectionIp)
-  
   const lndConfig = config.lnd()
   const neutrinoArgs = [
     '--bitcoin.active',
