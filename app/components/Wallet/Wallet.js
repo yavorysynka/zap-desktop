@@ -6,6 +6,7 @@ import Isvg from 'react-inlinesvg'
 import { btc, blockExplorer } from 'utils'
 import Value from 'components/Value'
 import AnimatedCheckmark from 'components/AnimatedCheckmark'
+import Settings from './Settings'
 
 import zapLogo from 'icons/zap_logo.svg'
 import qrCode from 'icons/qrcode.svg'
@@ -27,8 +28,11 @@ const Wallet = ({
   currencyName,
   setCurrency,
   setWalletCurrencyFilters,
-  isTestnet
+  isTestnet,
+  settings,
+  setSettingsOpen
 }) => {
+  console.log('settings: ', settings)
   const usdAmount = btc.satoshisToUsd((parseInt(balance.walletBalance, 10) + parseInt(balance.channelBalance, 10)), currentTicker.price_usd)
 
   const onCurrencyFilterClick = (currency) => {
@@ -45,10 +49,11 @@ const Wallet = ({
           </section>
 
           <section className={styles.user}>
-            <div>
+            <div className={styles.alias} onClick={() => settings.settingsOpen ? setSettingsOpen(false) : setSettingsOpen(true)}>
               <span>{info.data.alias}</span>
               <FaAngleDown />
             </div>
+            { settings.settingsOpen && <Settings /> }
           </section>
         </header>
 
