@@ -96,7 +96,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     connectionIp: stateProps.onboarding.connectionIp,
 
     setMobileConnection: dispatchProps.setMobileConnection,
-    fetchConnectionIp: dispatchProps.fetchConnectionIp
+    fetchConnectionIp: dispatchProps.fetchConnectionIp,
+    next: () => dispatchProps.changeStep(1),
+    back: () => dispatchProps.changeStep(0.1)
   }
 
   const aliasProps = {

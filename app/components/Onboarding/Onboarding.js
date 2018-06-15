@@ -85,28 +85,13 @@ const Onboarding = ({
           </FormContainer>
         )
       case 0.3:
-        return (
-          <FormContainer
-            title='Setup Zap mobile with your desktop'
-            description={`If you have any
-              other devices you'd like to 
-              use with your node we can
-              configure things to accept
-              incoming connections from
-              other devices.
-            `}
-            back={() => changeStep(0.1)}
-            next={() => changeStep(1)}
-          >
-            <MobileConnection {...mobileConnectionProps} />
-          </FormContainer>
-        )
+        return <MobileConnection {...mobileConnectionProps} />
       case 1:
         return (
           <FormContainer
             title='What should we call you?'
             description='Set your nickname to help others connect with you on the Lightning Network'
-            back={() => changeStep(0.1)}
+            back={() => changeStep(0.3)}
             next={() => changeStep(2)}
           >
             <Alias {...aliasProps} />
@@ -131,7 +116,7 @@ const Onboarding = ({
         return (
           <FormContainer
             title='Welcome back!'
-            description='Enter your wallet password or create a new wallet' // eslint-disable-line
+            description='Enter your wallet password to decrypt your wallet' // eslint-disable-line
             back={null}
             next={null}
           >
