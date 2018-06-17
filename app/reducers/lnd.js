@@ -1,9 +1,15 @@
+import fs from 'fs'
+import Store from 'electron-store'
 import { createSelector } from 'reselect'
+import config from 'lnd/config'
 import { fetchTicker } from './ticker'
 import { fetchBalance } from './balance'
 import { fetchInfo } from './info'
 import { requestBlockHeight } from '../api'
 import { showNotification } from '../notifications'
+
+const store = new Store({ name: 'connection' })
+
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -17,6 +23,8 @@ export const RECEIVE_BLOCK_HEIGHT = 'RECEIVE_BLOCK_HEIGHT'
 
 export const GRPC_DISCONNECTED = 'GRPC_DISCONNECTED'
 export const GRPC_CONNECTED = 'GRPC_CONNECTED'
+
+export const SET_ZAP_CONNECT = 'SET_ZAP_CONNECT'
 
 // ------------------------------------
 // Actions
@@ -84,6 +92,13 @@ export const fetchBlockHeight = () => async (dispatch) => {
   dispatch(receiveBlockHeight(blockData.blocks[0].height))
 }
 
+export function setZapConnect(zapConnectOpen) {
+  return {
+    type: SET_ZAP_CONNECT,
+    zapConnectOpen
+  }
+}
+
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
@@ -97,7 +112,9 @@ const ACTION_HANDLERS = {
   [RECEIVE_BLOCK_HEIGHT]: (state, { blockHeight }) => ({ ...state, blockHeight, fetchingBlockHeight: false }),
 
   [GRPC_DISCONNECTED]: state => ({ ...state, grpcStarted: false }),
-  [GRPC_CONNECTED]: state => ({ ...state, grpcStarted: true })
+  [GRPC_CONNECTED]: state => ({ ...state, grpcStarted: true }),
+  
+  [SET_ZAP_CONNECT]: (state, { zapConnectOpen }) => ({ ...state, zapConnectOpen })
 }
 
 // ------------------------------------
@@ -109,7 +126,10 @@ const initialState = {
   fetchingBlockHeight: false,
   lines: [],
   blockHeight: 0,
-  lndBlockHeight: 0
+  lndBlockHeight: 0,
+  macaroonPath: config.lnd().macaroon,
+  certPath: config.lnd().cert,
+  zapConnectOpen: false
 }
 
 // ------------------------------------
@@ -118,6 +138,8 @@ const initialState = {
 const lndSelectors = {}
 const blockHeightSelector = state => state.lnd.blockHeight
 const lndBlockHeightSelector = state => state.lnd.lndBlockHeight
+const macaroonPathSelector = state => state.lnd.macaroonPath
+const certPathSelector = state => state.lnd.certPath
 
 lndSelectors.syncPercentage = createSelector(
   blockHeightSelector,
@@ -128,6 +150,20 @@ lndSelectors.syncPercentage = createSelector(
     if (percentage === Infinity) { return '' }
 
     return percentage
+  }
+)
+
+lndSelectors.genZapConnect = createSelector(
+  macaroonPathSelector,
+  certPathSelector,
+  (macPath, certPath) => {
+    const ip = `${store.get('connectionIp')}:10009`
+
+    const m = new Buffer(fs.readFileSync(macPath)).toString('base64')
+
+    const c = fs.readFileSync(certPath).toString()
+
+    return { c, m, ip }
   }
 )
 

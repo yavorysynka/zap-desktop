@@ -90,7 +90,9 @@ class Activity extends Component {
       updateSearchActive,
       updateSearchText,
 
-      walletProps
+      walletProps,
+
+      lnd
     } = this.props
 
     if (!balance.channelBalance || !balance.walletBalance) { return <LoadingBolt /> }

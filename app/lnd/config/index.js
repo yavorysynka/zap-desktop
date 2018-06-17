@@ -17,7 +17,7 @@ import { app } from 'electron'
 //
 // If we are run from outside of a packaged app, our working directory is the right place to be.
 // And no, we can't just set our working directory to somewhere inside the asar. The OS can't handle that.
-const appPath = app.getAppPath()
+const appPath = app ? app.getAppPath() : []
 const appRootPath = appPath.indexOf('default_app.asar') < 0 ? normalize(`${appPath}/..`) : ''
 
 // Get an electromn store named 'connection' in which the saved connection detailes are stored.

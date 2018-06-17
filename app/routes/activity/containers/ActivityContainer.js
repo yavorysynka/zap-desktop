@@ -30,6 +30,8 @@ import { setWalletCurrencyFilters } from 'reducers/info'
 
 import { setSettingsOpen } from 'reducers/settings'
 
+import { setZapConnect } from 'reducers/lnd'
+
 import Activity from '../components/Activity'
 
 const mapDispatchToProps = {
@@ -50,7 +52,8 @@ const mapDispatchToProps = {
   updateSearchText,
   setFormType,
   setWalletCurrencyFilters,
-  setSettingsOpen
+  setSettingsOpen,
+  setZapConnect
 }
 
 const mapStateToProps = state => ({
@@ -71,6 +74,10 @@ const mapStateToProps = state => ({
   network: state.network,
 
   settings: state.settings,
+
+  lnd: state.lnd,
+
+  onboarding: state.onboarding,
 
   paymentModalOpen: paymentSelectors.paymentModalOpen(state),
   invoiceModalOpen: invoiceSelectors.invoiceModalOpen(state),
@@ -100,6 +107,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     currencyName: stateProps.currencyName,
     isTestnet: stateProps.info.data.testnet,
     settings: stateProps.settings,
+    zapConnectOn: stateProps.onboarding.mobileConnection,
 
     setCurrency: dispatchProps.setCurrency,
     setWalletCurrencyFilters: dispatchProps.setWalletCurrencyFilters,
@@ -107,7 +115,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     openReceiveModal: dispatchProps.openWalletModal,
     openPayForm: () => dispatchProps.setFormType('PAY_FORM'),
     openRequestForm: () => dispatchProps.setFormType('REQUEST_FORM'),
-    setSettingsOpen: dispatchProps.setSettingsOpen
+    setSettingsOpen: dispatchProps.setSettingsOpen,
+    setZapConnect: dispatchProps.setZapConnect
   }
 
   return {

@@ -15,6 +15,8 @@ import ContactModal from 'components/Contacts/ContactModal'
 import ReceiveModal from 'components/Wallet/ReceiveModal'
 import ActivityModal from 'components/Activity/ActivityModal'
 
+import ZapConnect from 'components/Wallet/ZapConnect'
+
 import styles from './App.scss'
 
 class App extends Component {
@@ -66,6 +68,7 @@ class App extends Component {
       receiveModalProps,
       activityModalProps,
       channelFormProps,
+      zapConnectProps,
 
       children
     } = this.props
@@ -91,6 +94,8 @@ class App extends Component {
 
         <ReceiveModal {...receiveModalProps} />
         <ActivityModal {...activityModalProps} />
+        
+        <ZapConnect {...zapConnectProps} />
 
         <div className={styles.content}>
           {children}

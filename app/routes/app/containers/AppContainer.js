@@ -23,7 +23,7 @@ import { payInvoice } from 'reducers/payment'
 
 import { createInvoice, fetchInvoice } from 'reducers/invoice'
 
-import { fetchBlockHeight, lndSelectors } from 'reducers/lnd'
+import { fetchBlockHeight, setZapConnect, lndSelectors } from 'reducers/lnd'
 
 import {
   fetchChannels,
@@ -133,7 +133,9 @@ const mapDispatchToProps = {
   fetchDescribeNetwork,
 
   hideActivityModal,
-  setActivityModalCurrencyFilters
+  setActivityModalCurrencyFilters,
+
+  setZapConnect
 }
 
 const mapStateToProps = state => ({
@@ -175,6 +177,7 @@ const mapStateToProps = state => ({
   payInputMin: payFormSelectors.payInputMin(state),
   requestUsdAmount: requestFormSelectors.usdAmount(state),
   syncPercentage: lndSelectors.syncPercentage(state),
+  genZapConnect: lndSelectors.genZapConnect(state),
 
   filteredNetworkNodes: contactFormSelectors.filteredNetworkNodes(state),
   showManualForm: contactFormSelectors.showManualForm(state),
@@ -443,6 +446,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     closeForm: () => dispatchProps.setChannelFormType(null)
   }
 
+  const zapConnectProps = {
+    genZapConnect: stateProps.genZapConnect,
+    isOpen: stateProps.lnd.zapConnectOpen,
+
+    setZapConnect: dispatchProps.setZapConnect
+  }
+
 
   return {
     ...stateProps,
@@ -465,6 +475,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     connectManuallyProps,
     // props for the channel form wrapper
     channelFormProps,
+    // props for the Zap Cconnect QR code
+    zapConnectProps,
     // Props to pass to the pay form
     formProps: formProps(stateProps.form.formType),
     // action to close form

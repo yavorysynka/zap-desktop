@@ -116,7 +116,7 @@ const Onboarding = ({
         return (
           <FormContainer
             title='Welcome back!'
-            description='Enter your wallet password to decrypt your wallet' // eslint-disable-line
+            description='Enter your wallet password to unlock your wallet' // eslint-disable-line
             back={null}
             next={null}
           >

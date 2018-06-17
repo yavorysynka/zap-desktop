@@ -3,23 +3,16 @@ import PropTypes from 'prop-types'
 import { FaAngleRight, FaMobile } from 'react-icons/lib/fa'
 import styles from './Settings.scss'
 
-const Settings = ({}) => {
+const Settings = ({ setZapConnect, setSettingsOpen }) => {
+  const zapConnectClicked = () => {
+    setZapConnect(true)
+    setSettingsOpen(false)
+  }
+
   return (
     <div className={styles.container}>
       <ul>
-        <li>
-          <span>Bitcoin Conversion</span> <FaAngleRight style={{ verticalAlign: 'top' }} />
-        </li>
-        <li>
-          <span>Fiat Conversion</span> <FaAngleRight style={{ verticalAlign: 'top' }} />
-        </li>
-        <li>
-          <span>Notifications</span> <FaAngleRight style={{ verticalAlign: 'top' }} />
-        </li>
-        <li>
-          <span>Autopay</span> <FaAngleRight style={{ verticalAlign: 'top' }} />
-        </li>
-        <li className={styles.zapconnect}>
+        <li className={styles.zapconnect} onClick={zapConnectClicked}>
           <span>Zap Connect</span>
           <FaMobile />
         </li>
@@ -28,6 +21,9 @@ const Settings = ({}) => {
   )
 }
 
-Settings.propTypes = {}
+Settings.propTypes = {
+  setZapConnect: PropTypes.func.isRequired,
+  setSettingsOpen: PropTypes.func.isRequired
+}
 
 export default Settings

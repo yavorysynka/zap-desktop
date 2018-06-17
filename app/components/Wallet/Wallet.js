@@ -30,9 +30,10 @@ const Wallet = ({
   setWalletCurrencyFilters,
   isTestnet,
   settings,
-  setSettingsOpen
+  setSettingsOpen,
+  setZapConnect,
+  zapConnectOn
 }) => {
-  console.log('settings: ', settings)
   const usdAmount = btc.satoshisToUsd((parseInt(balance.walletBalance, 10) + parseInt(balance.channelBalance, 10)), currentTicker.price_usd)
 
   const onCurrencyFilterClick = (currency) => {
@@ -53,7 +54,7 @@ const Wallet = ({
               <span>{info.data.alias}</span>
               <FaAngleDown />
             </div>
-            { settings.settingsOpen && <Settings /> }
+            { (zapConnectOn && settings.settingsOpen) && <Settings setZapConnect={setZapConnect} setSettingsOpen={setSettingsOpen} /> }
           </section>
         </header>
 
