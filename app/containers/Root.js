@@ -31,7 +31,8 @@ import {
 import { lndSelectors } from 'reducers/lnd'
 import { walletAddress } from 'reducers/address'
 import LoadingBolt from 'components/LoadingBolt'
-import Onboarding from 'components/Onboarding'
+// import Onboarding from 'components/Onboarding'
+import NextOnboarding from 'components/NextOnboarding'
 import Syncing from 'components/Onboarding/Syncing'
 import Routes from '../routes'
 
@@ -212,7 +213,8 @@ const Root = ({
 }) => {
   // If we are onboarding show the onboarding screen.
   if (onboardingProps.onboarding.onboarding) {
-    return <Onboarding {...onboardingProps} />
+    // return <Onboarding {...onboardingProps} />
+    return <NextOnboarding />
   }
 
   // If we are syncing show the syncing screen.
