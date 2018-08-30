@@ -303,6 +303,7 @@
     "react-dom": "^16.4.2",
     "react-hot-loader": "^4.3.4",
     "react-inlinesvg": "^0.8.1",
+    "react-input-range": "^1.3.0",
     "react-modal": "^3.5.1",
     "react-moment": "^0.7.9",
     "react-redux": "^5.0.7",
