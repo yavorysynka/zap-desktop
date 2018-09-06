@@ -90,6 +90,10 @@ class Neutrino extends EventEmitter {
       // neutrinoArgs.push('--neutrino.connect=testnet2-btcd.zaphq.io')
     }
 
+    // Use the experimental routing config assumechanvalid
+    //https://github.com/lightningnetwork/lnd/blob/309e656a979f22bf53fa2c85544fc2ee9faa10fd/routing/conf_experimental.go
+    neutrinoArgs.push('--routing.assumechanvalid')
+
     this.process = spawn(this.lndConfig.binaryPath, neutrinoArgs)
       .on('error', error => this.emit(ERROR, error))
       .on('close', code => {
