@@ -1,6 +1,5 @@
 commit_message: '[ci skip]'
 files:
   - source: /app/locales/dev/*.json
-    translation: /app/locales/%locale%/%original_file_name%
-    translate_attributes: '0'
+    translation: /app/locales/%two_letters_code%/%original_file_name%
     update_option: update_without_changes
